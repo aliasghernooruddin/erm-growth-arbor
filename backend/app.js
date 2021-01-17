@@ -1,28 +1,78 @@
-var express = require('express');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var cors = require('cors');
+const express = require('express');
+const mongoose = require("mongoose");
+const passport = require("passport");
+const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const dotenv = require("dotenv");
+const session = require("express-session");
+const MongoStore = require("connect-mongo")(session);
+const connectDB = require("./config/db");
 
-var passport = require('passport');
+const app = express();
 
-require('./api/config/db');
+// Load config depending on env
+if (process.env.NODE_ENV === "development") {
+  dotenv.config({
+    path: "./config/config-local.env",
+  });
+} else {
+  dotenv.config({
+    path: "./config/config.env",
+  });
+}
 
-require('./api/config/passport');
+// Passport Config
+require("./config/passport")(passport);
 
-var routesApi = require('./api/routes/index');
+// Connect to MongoDB
+connectDB();
 
-var app = express();
 
-app.use(logger('dev'));
+// Logging
+if (process.env.NODE_ENV === "development") {
+  app.use(morgan("dev"));
+}
+
+// Express body parser
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+
+// Express Cookie Parser
 app.use(cookieParser());
-app.use(cors());
+
+// Express session
+app.use(
+	session({
+		secret: "secret",
+		resave: true,
+		saveUninitialized: true,
+		cookie: {
+			httpOnly: false,
+			maxAge: 10000000,
+			// allow the cookie to be sent via HTTP ("true" means "HTTPS only)
+			secure: false,
+			// sameSite: 'none'
+		},
+		store: new MongoStore({ mongooseConnection: mongoose.connection }),
+	})
+);
+
+// enable cors
+app.use(
+	cors({
+		credentials: true,
+		origin: (process.env.NODE_ENV=='development')?"http://localhost:8080":"https://google.com",
+	})
+);
 
 
+// Passport middleware
 app.use(passport.initialize());
+app.use(passport.session());
 
+const routesApi = require('./routes/index')
 app.use('/api/v1', routesApi);
 
 
@@ -46,4 +96,10 @@ app.use(function (err, req, res, next) {
 });
 
 
-module.exports = app;
+const PORT = process.env.PORT || 80;
+
+
+app.listen(
+  PORT,
+  console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`)
+);

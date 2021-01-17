@@ -1,9 +1,8 @@
-var express = require('express');
-var router = express.Router();
+const router = require('express').Router;
 
-var ctrlAuth = require('../controllers/authentication');
-var ctrlAdmin = require('../controllers/admin');
-var ctrlOrganisation = require('../controllers/organisation');
+const ctrlAuth = require('../controllers/authentication');
+const ctrlAdmin = require('../controllers/admin');
+const ctrlOrganisation = require('../controllers/organisation');
 
 // user module
 router.post('/register-user', ctrlAuth.register);
