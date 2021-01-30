@@ -1,15 +1,16 @@
 <template>
   <section>
-    <v-app-bar clipped-left app flat dark color="cyan lighten-1">
-      <v-app-bar-nav-icon @click="drawer = !drawer" />
+    <v-app-bar clipped-left app dark color="cyan lighten-1">
+      <!-- <v-app-bar-nav-icon @click="drawer = !drawer" /> -->
 
       <v-toolbar-title>
-        <v-img src="../assets/logo.png" class="logo"></v-img>
+        <v-img src="../../assets/logo.png" class="logo mr-10"></v-img>
       </v-toolbar-title>
+      <h3>ENTERPRISE RISK MANAGEMENT - RISK CREATOR</h3>
       <v-spacer></v-spacer>
       <v-btn color="white" text @click="logout">Logout</v-btn>
     </v-app-bar>
-    <v-navigation-drawer clipped v-model="drawer" app color="grey lighten-5">
+    <!-- <v-navigation-drawer clipped v-model="drawer" app color="grey lighten-5">
       <v-list>
         <v-list-item router to="creator" color="primary">
           <v-list-item-action>
@@ -17,6 +18,15 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Risk Creator</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
+           <v-list-item router to="creator2" color="primary">
+          <v-list-item-action>
+            <v-icon color="primary">mdi-fireplace-off</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Risk Creator 2</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
 
@@ -65,7 +75,7 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
 
     <v-sheet class="rows" color="grey lighten-3">
       <router-view name="portal" />
@@ -74,6 +84,8 @@
 </template>
 
 <script>
+import AuthenticationAPIS from "@/service/apis/authentication.js";
+
 export default {
   name: "Layout",
   data() {
@@ -83,7 +95,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$router.push("/login");
+      AuthenticationAPIS.logout();
     },
   },
   created: function () {},
@@ -92,10 +104,47 @@ export default {
 
 <style>
 .rows {
-  height: calc(100vh - 64px);
+  /* height: calc(100vh - 64px); */
+  min-height: calc(100vh - 64px);
 }
 
 .logo {
-  width: 60px;
+  width: 60px !important;
+}
+
+.custom-loader {
+  animation: loader 1s infinite;
+}
+@-moz-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes loader {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

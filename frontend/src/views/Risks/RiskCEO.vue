@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: "Owner",
+  name: "CEO",
   components: {},
   data() {
     return {
@@ -30,10 +30,10 @@ export default {
     };
   },
   created: function () {
-    this.isUserLoggedIn();
+    
   },
   methods: {
-    isUserLoggedIn() {},
+   
   },
 };
 </script>

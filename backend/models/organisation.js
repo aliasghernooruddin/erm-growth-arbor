@@ -1,14 +1,7 @@
 var mongoose = require('mongoose');
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
 
-let organisationSchema = new mongoose.Schema({
+const organisationSchema = new mongoose.Schema({
   name: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  domain: {
     type: String,
     unique: true,
     required: true
@@ -22,32 +15,37 @@ let organisationSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  hash: String,
-  salt: String
-
+  form1: {
+    employees: String,
+    country: String,
+    currency: String,
+    turnover: String
+  },
+  form2: {
+    high_users: String,
+    medium_users: String,
+    low_users: String
+  },
+  form3: {
+    salary_high_users: String,
+    salary_medium_users: String,
+    salary_low_users: String,
+    workdays: String
+  },
+  form4: {
+    categories: Array,
+    sub_categories: Array,
+    descriptions: Array,
+    likelihoods: Array,
+    impacts: Array,
+    frequencies: Array,
+    ratings: Array,
+    statuses: Array
+  },
+  departments: Array
 });
 
 
-organisationSchema.methods.setPassword = function (password) {
-  this.salt = crypto.randomBytes(16).toString('hex');
-  this.hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
-};
+const Organisation = mongoose.model('Organisation', organisationSchema);
 
-organisationSchema.methods.validPassword = function (password) {
-  let hash = crypto.pbkdf2Sync(password, this.salt, 1000, 64, 'sha512').toString('hex');
-  return this.hash === hash;
-};
-
-organisationSchema.methods.generateJwt = function () {
-  let expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
-
-  return jwt.sign({
-    _id: this._id,
-    email: this.email,
-    name: this.name,
-    exp: parseInt(expiry.getTime() / 1000),
-  }, "MY_SECRET");
-};
-
-mongoose.model('Organisation', organisationSchema);
+module.exports = Organisation;

@@ -1,0 +1,22 @@
+{
+    "POST": {
+        "success": 201,
+        "loginReq": 401,
+        "error": 400
+    },
+    "GET": {
+        "success": 200,
+        "loginReq": 401,
+        "error": 400
+    },
+    "PUT": {
+        "success": 201,
+        "loginReq": 401,
+        "error": 400
+    },
+    "DELETE": {
+        "success": 200,
+        "loginReq": 401,
+        "error": 400
+    }
+}

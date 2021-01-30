@@ -1,6 +1,6 @@
 <template>
   <section>
-    <v-toolbar class="no-bg" flat>
+    <v-toolbar flat>
       <v-toolbar-title>
         <v-img :src="require('@/assets/logo.png')" class="logo"></v-img>
       </v-toolbar-title>
@@ -81,7 +81,10 @@ export default {
   components: {},
   data() {
     return {
-      data: {},
+      data: {
+        email: "",
+        password: "",
+      },
       loading: false,
       show1: false,
       emailRules: constants.EMAIL_RULES,
@@ -99,14 +102,34 @@ export default {
     login: function () {
       if (this.$refs.form.validate()) {
         this.loading = true;
-      
+        AuthenticationAPIS.login(this.data).then((resp) => {
+          if (resp["status"]) {
+            if (resp["isHead"]) {
+              localStorage.setItem("organisation", true);
+              this.$router.push("organisation/details");
+            } else {
+              let view = resp["views"][0];
+              if (view == "Risk Creator") this.$router.push("portal/creator");
+              if (view == "Risk Department")
+                this.$router.push("portal/department");
+              if (view == "Risk Owner") this.$router.push("portal/owner");
+              if (view == "Risk Committee")
+                this.$router.push("portal/committee");
+              if (view == "CEO") this.$router.push("portal/ceo");
+            }
+          } else {
+            this.text = resp.message;
+            this.snackbar = true;
+          }
+          this.loading = false;
+        });
       }
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 #row {
   height: 87vh;
 }
@@ -171,30 +194,11 @@ label {
 .logo {
   width: 100px;
   margin-left: 15px;
-}
-
-.no-bg {
-  background: none !important;
-  padding-top: 30px;
-}
-
-.text {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 16px;
-  color: #292d34;
-  margin-right: 20px;
-  letter-spacing: 1px;
-  color: grey;
+  margin-top: 70px;
 }
 
 .v-text-field {
   border-radius: 7px !important;
-}
-
-input,
-.v-select__selection {
-  font-weight: 600 !important;
 }
 
 .custom-loader {

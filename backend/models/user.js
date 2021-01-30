@@ -1,24 +1,28 @@
-var mongoose = require('mongoose');
-var crypto = require('crypto');
-var jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const crypto = require('crypto');
 
-var userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     unique: true,
     required: true
   },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
+  name: { type: String, required: true },
   organisationId: { type: String, required: true },
-  status: { type: Boolean, required: true },
+  phone: { type: String, required: true },
+  position: { type: String },
+  isUser: { type: Boolean, default: false },
+  isHead: { type: Boolean, default: false },
+  isVerified: { type: Boolean, default: false },
+  isFirstVisit: { type: Boolean, default: true },
+  department: String,
+  views: String,
   creation_date: {
     type: Date,
     default: Date.now
   },
-  views: Array,
-  hash: String,
-  salt: String
+  hash: { type: String },
+  salt: { type: String },
 },
   { strict: true }
 );
@@ -33,16 +37,7 @@ userSchema.methods.validPassword = function (password) {
   return this.hash === hash;
 };
 
-userSchema.methods.generateJwt = function () {
-  var expiry = new Date();
-  expiry.setDate(expiry.getDate() + 7);
 
-  return jwt.sign({
-    _id: this._id,
-    email: this.email,
-    name: this.name,
-    exp: parseInt(expiry.getTime() / 1000),
-  }, "MY_SECRET");
-};
+const User = mongoose.model("User", userSchema);
 
-mongoose.model('User', userSchema);
+module.exports = User;

@@ -9,28 +9,48 @@ module.exports = function (passport) {
         new LocalStrategy(
             { usernameField: "email" },
             (email, password, done) => {
+
                 // Match user
                 User.findOne({
                     email: email,
                 }).then((user) => {
                     if (!user) {
                         return done(null, false, {
-                            message: "That email is not registered",
+                            message: "User not found",
+                            status: false
                         });
                     }
 
+                    if (!user._doc.isHead && !user._doc.isUser) {
+                        return done(null, false, {
+                            message: "User not found",
+                            status: false
+                        })
+                    }
+
                     // Match password
-                    bcrypt.compare(password, user.password, (err, isMatch) => {
-                        if (err) throw err;
-                        if (isMatch) {
-                            return done(null, user);
-                        } else {
-                            return done(null, false, {
-                                message: "Password incorrect",
-                            });
-                        }
-                    });
-                });
+                    if (!user.validPassword(password)) {
+                        return done(null, false, {
+                            message: 'Password is wrong',
+                            status: false
+                        });
+                    }
+
+                    if (!user._doc.isVerified) {
+                        return done(null, false, {
+                            message: 'Account not verified',
+                            status: false
+                        });
+                    }
+
+                    // If credentials are correct, return the user object
+                    return done(null, user);
+                }).catch(err => {
+                    return done(null, false, {
+                        message: err,
+                        status: false
+                    })
+                })
             }
         )
     );

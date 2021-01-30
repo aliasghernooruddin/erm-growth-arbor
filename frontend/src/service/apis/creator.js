@@ -5,15 +5,15 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // Base Domain of our Backend
 // const BASE_DOMAIN = process.env.VUE_APP_BASE_DOMAIN
-const BASE_DOMAIN = 'http://localhost:3000/api/v1/admin'
+const BASE_DOMAIN = 'http://localhost:3000/api/v1/creator'
 
-const createUrl = `${BASE_DOMAIN}/create-organisation`;
+const createRiskUrl = `${BASE_DOMAIN}/create-risk`;
 
-const getOrganisationsUrl = `${BASE_DOMAIN}/get-organisations`;
+const getOrganisationVariablesUrl = `${BASE_DOMAIN}/organisation-variables/`;
 
 export default ({
     create(data) {
-        return axios.post(createUrl, data).then(res => {
+        return axios.post(createRiskUrl, data, { withCredentials: true }).then(res => {
             return res.data
         }).catch(err => {
             console.log(err.response.data)
@@ -21,8 +21,8 @@ export default ({
         })
     },
 
-    getOrganisations() {
-        return axios.get(getOrganisationsUrl).then(res => {
+    getOrganisationVariables(id) {
+        return axios.get(getOrganisationVariablesUrl + id, { withCredentials: true }).then(res => {
             return res.data
         }).catch(err => {
             console.log(err.response.data)

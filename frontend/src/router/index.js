@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Department from '../views/RiskDepartment.vue'
-import Committee from '../views/RiskCommittee.vue'
-import CEO from '../views/RiskCEO.vue'
-import Owner from '../views/RiskOwner.vue'
-import Creator from '../views/RiskCreator.vue'
-import Layout from '../views/Layout.vue'
-import Organisation from '../views/Organisation.vue'
+
+import Department from '../views/Risks/RiskDepartment.vue'
+import Committee from '../views/Risks/RiskCommittee.vue'
+import CEO from '../views/Risks/RiskCEO.vue'
+import Owner from '../views/Risks/RiskOwner.vue'
+import Creator from '../views/Risks/RiskCreator.vue'
+import RisksLayout from '../views/Risks/Layout.vue'
+
+import OrganisationsLayout from '../views/Organisation/Layout.vue'
+import Details from '../views/Organisation/Details.vue'
+import Variables from '../views/Organisation/Variables.vue'
+import Departments from '../views/Organisation/Departments.vue'
 
 Vue.use(VueRouter)
 
@@ -48,13 +53,21 @@ const routes = [
     path: '/portal',
     redirect: '/portal/ceo',
     name: 'Portal',
-    component: Layout,
+    component: RisksLayout,
     children: [{
       path: 'owner',
       name: 'Owner',
       components: {
         portal: Owner
       },
+      beforeEnter: (to, from, next) => {
+        let views = JSON.parse(localStorage.getItem('organisation'))['views']
+        if (views.includes('Risk Owner')) {
+          next()
+        } else {
+          next('login')
+        }
+      }
     },
     {
       path: 'ceo',
@@ -62,6 +75,14 @@ const routes = [
       components: {
         portal: CEO
       },
+      beforeEnter: (to, from, next) => {
+        let views = JSON.parse(localStorage.getItem('organisation'))['views']
+        if (views.includes('CEO')) {
+          next()
+        } else {
+          next('login')
+        }
+      }
     },
     {
       path: 'committee',
@@ -69,6 +90,14 @@ const routes = [
       components: {
         portal: Committee
       },
+      beforeEnter: (to, from, next) => {
+        let views = JSON.parse(localStorage.getItem('organisation'))['views']
+        if (views.includes('Risk Committee')) {
+          next()
+        } else {
+          next('login')
+        }
+      }
     },
     {
       path: 'creator',
@@ -76,6 +105,14 @@ const routes = [
       components: {
         portal: Creator
       },
+      beforeEnter: (to, from, next) => {
+        let views = JSON.parse(localStorage.getItem('organisation'))['views']
+        if (views.includes('Risk Creator')) {
+          next()
+        } else {
+          next('login')
+        }
+      }
     },
     {
       path: 'department',
@@ -83,18 +120,52 @@ const routes = [
       components: {
         portal: Department
       },
+      beforeEnter: (to, from, next) => {
+        let views = JSON.parse(localStorage.getItem('organisation'))['views']
+        if (views.includes('Risk Department')) {
+          next()
+        } else {
+          next('login')
+        }
+      }
+    }]
+  },
+  {
+    path: '/organisation',
+    redirect: '/organisation/details',
+    name: 'Organisation',
+    component: OrganisationsLayout,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem('organisation')) {
+        next('login')
+      } else {
+        next()
+      }
+    },
+    children: [{
+      path: 'details',
+      name: 'Details',
+      components: {
+        organisation: Details
+      }
     },
     {
-      path: 'organisation',
-      name: 'Organisation',
+      path: 'variables',
+      name: 'Variables',
       components: {
-        portal: Organisation
-      },
+        organisation: Variables
+      }
+    },
+    {
+      path: 'departments',
+      name: 'Departments',
+      components: {
+        organisation: Departments
+      }
     }
     ]
-  },
+  }
 ]
-
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,

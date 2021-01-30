@@ -1,6 +1,7 @@
 <template>
   <section>
 
+
     <v-container fluid fill-height>
       <v-row align="center" justify="center" id="row">
         <v-col cols="12" md="5"> </v-col>
@@ -20,7 +21,7 @@
 
 <script>
 export default {
-  name: "CEO",
+  name: "Committee",
   components: {},
   data() {
     return {
@@ -30,10 +31,10 @@ export default {
     };
   },
   created: function () {
-    this.isUserLoggedIn();
+    
   },
   methods: {
-    isUserLoggedIn() {},
+  
   },
 };
 </script>

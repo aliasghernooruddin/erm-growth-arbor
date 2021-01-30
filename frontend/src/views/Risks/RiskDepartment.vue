@@ -1,16 +1,8 @@
 <template>
-  <v-container fluid fill-height class="bg">
+  <v-container fluid fill-height>
     <v-row align="center" justify="center">
       <v-col cols="10">
-        <v-tabs
-          v-model="tab"
-          background-color="blue lighten-2"
-          dark
-          show-arrows
-          next-icon="mdi-arrow-right-bold-box-outline"
-          prev-icon="mdi-arrow-left-bold-box-outline"
-        >
-          <v-tabs-slider color="yellow"></v-tabs-slider>
+        <v-tabs v-model="tab" background-color="blue lighten-2" dark>
           <v-tab v-for="n in tabs" :key="n"> Risk {{ n }} </v-tab>
           <v-btn
             class="ma-2"
@@ -25,19 +17,8 @@
         </v-tabs>
         <v-tabs-items v-model="tab">
           <v-tab-item v-for="n in tabs" :key="n">
-           
+            <v-sheet elevation="1" rounded>
               <v-container>
-                <v-row>
-                  <v-col cols="12">
-                    <v-divider inset></v-divider>
-                    <h3
-                      class="center font-weight-black grey--text text-darken-1 ma-5"
-                    >
-                      Risk {{ n }}
-                    </h3>
-                    <v-divider inset></v-divider>
-                  </v-col>
-                </v-row>
                 <v-row>
                   <v-col cols="1">
                     <span> Risk Ref </span>
@@ -97,11 +78,10 @@
                       dense
                       outlined
                     ></v-select>
-                  </v-col>
-                </v-row>
+                  </v-col> </v-row
+                ><v-divider inset></v-divider>
                 <v-row>
-                  <v-col cols="12"
-                    ><v-divider inset></v-divider>
+                  <v-col cols="12">
                     <h3
                       class="center font-weight-black grey--text text-darken-1 ma-5"
                     >
@@ -151,15 +131,17 @@
                     <v-text-field
                       value="Class III-Control Critical"
                       dense
+                      label="Inherent Risk Exposure"
                       readonly
                       outlined
                     >
                     </v-text-field>
                   </v-col>
+                  <v-divider inset></v-divider>
                 </v-row>
+
                 <v-row>
                   <v-col cols="12">
-                    <v-divider inset></v-divider>
                     <h3
                       class="center font-weight-black grey--text text-darken-1 ma-5"
                     >
@@ -237,10 +219,11 @@
                       value="Class III-Control Critical"
                     ></v-text-field>
                   </v-col>
+                  <v-divider inset></v-divider>
                 </v-row>
+
                 <v-row>
                   <v-col cols="12">
-                    <v-divider inset></v-divider>
                     <h3
                       class="center font-weight-black grey--text text-darken-1 ma-5"
                     >
@@ -307,26 +290,8 @@
                     ></v-select
                   ></v-col>
                 </v-row>
-                <v-row>
-                  <v-col cols="12"
-                    ><v-btn
-                      class="float-right ma-4 ml-6"
-                      depressed
-                      tile
-                      color="success"
-                      >Create</v-btn
-                    >
-                    <v-btn
-                      class="float-right ma-4 ml-6"
-                      depressed
-                      tile
-                      color="primary"
-                      >Save</v-btn
-                    >
-                  </v-col>
-                </v-row>
               </v-container>
-        
+            </v-sheet>
           </v-tab-item>
         </v-tabs-items>
       </v-col>
@@ -457,7 +422,7 @@ export default {
           "Inadequate-Poor - 8-9 - Systems and processes exist but do not mitigate the risk",
           "Inadequate-Unsatisfactory - 10 - No systems and processes exist to manage the risk",
         ],
-        status: ["On Track", "Off Track"],
+        status: ['On Track', 'Off Track']
       },
       snackbar: false,
       multiLine: true,
@@ -465,10 +430,10 @@ export default {
     };
   },
   created: function () {
-    this.isUserLoggedIn();
+
   },
   methods: {
-    isUserLoggedIn() {},
+   
     moveEnd() {
       console.log("k");
       window.scrollTo(
@@ -481,8 +446,8 @@ export default {
 </script>
 
 <style>
-.bg{
-  background: #eeeeee;
+.no-bg {
+  background: none !important;
 }
 
 .custom-loader {

@@ -1,7 +1,6 @@
 <template>
   <section>
 
-
     <v-container fluid fill-height>
       <v-row align="center" justify="center" id="row">
         <v-col cols="12" md="5"> </v-col>
@@ -21,7 +20,7 @@
 
 <script>
 export default {
-  name: "Committee",
+  name: "Owner",
   components: {},
   data() {
     return {
@@ -31,10 +30,10 @@ export default {
     };
   },
   created: function () {
-    this.isUserLoggedIn();
+  
   },
   methods: {
-    isUserLoggedIn() {},
+    
   },
 };
 </script>
@@ -42,41 +41,5 @@ export default {
 <style>
 .no-bg {
   background: none !important;
-}
-
-.custom-loader {
-  animation: loader 1s infinite;
-}
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>
