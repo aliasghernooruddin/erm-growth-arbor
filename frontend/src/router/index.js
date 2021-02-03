@@ -7,11 +7,13 @@ import CEO from '../views/Risks/RiskCEO.vue'
 import Owner from '../views/Risks/RiskOwner.vue'
 import Creator from '../views/Risks/RiskCreator.vue'
 import RisksLayout from '../views/Risks/Layout.vue'
+import Risks from '../views/Risks/Risks.vue'
 
 import OrganisationsLayout from '../views/Organisation/Layout.vue'
 import Details from '../views/Organisation/Details.vue'
 import Variables from '../views/Organisation/Variables.vue'
 import Departments from '../views/Organisation/Departments.vue'
+
 
 Vue.use(VueRouter)
 
@@ -54,81 +56,97 @@ const routes = [
     redirect: '/portal/ceo',
     name: 'Portal',
     component: RisksLayout,
-    children: [{
-      path: 'owner',
-      name: 'Owner',
-      components: {
-        portal: Owner
-      },
-      beforeEnter: (to, from, next) => {
-        let views = JSON.parse(localStorage.getItem('organisation'))['views']
-        if (views.includes('Risk Owner')) {
-          next()
-        } else {
-          next('login')
+    children: [
+      {
+        path: 'owner',
+        name: 'Owner',
+        components: {
+          portal: Owner
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views == 'Risk Owner') {
+            next()
+          } else {
+            next('login')
+          }
         }
-      }
-    },
-    {
-      path: 'ceo',
-      name: 'Ceo',
-      components: {
-        portal: CEO
       },
-      beforeEnter: (to, from, next) => {
-        let views = JSON.parse(localStorage.getItem('organisation'))['views']
-        if (views.includes('CEO')) {
-          next()
-        } else {
-          next('login')
+      {
+        path: 'ceo',
+        name: 'Ceo',
+        components: {
+          portal: CEO
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views == 'CEO') {
+            next()
+          } else {
+            next('login')
+          }
         }
-      }
-    },
-    {
-      path: 'committee',
-      name: 'Committee',
-      components: {
-        portal: Committee
       },
-      beforeEnter: (to, from, next) => {
-        let views = JSON.parse(localStorage.getItem('organisation'))['views']
-        if (views.includes('Risk Committee')) {
-          next()
-        } else {
-          next('login')
+      {
+        path: 'committee',
+        name: 'Committee',
+        components: {
+          portal: Committee
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views == 'Risk Committee') {
+            next()
+          } else {
+            next('login')
+          }
         }
-      }
-    },
-    {
-      path: 'creator',
-      name: 'Creator',
-      components: {
-        portal: Creator
       },
-      beforeEnter: (to, from, next) => {
-        let views = JSON.parse(localStorage.getItem('organisation'))['views']
-        if (views.includes('Risk Creator')) {
-          next()
-        } else {
-          next('login')
+      {
+        path: 'creator',
+        name: 'Creator',
+        components: {
+          portal: Creator
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views == 'Risk Creator') {
+            next()
+          } else {
+            next('login')
+          }
         }
-      }
-    },
-    {
-      path: 'department',
-      name: 'Department',
-      components: {
-        portal: Department
       },
-      beforeEnter: (to, from, next) => {
-        let views = JSON.parse(localStorage.getItem('organisation'))['views']
-        if (views.includes('Risk Department')) {
-          next()
-        } else {
-          next('login')
+      {
+        path: 'risks',
+        name: 'Risks',
+        components: {
+          portal: Risks
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views) {
+            next()
+          } else {
+            next('login')
+          }
         }
-      }
-    }]
+      },
+      {
+        path: 'department',
+        name: 'Department',
+        components: {
+          portal: Department
+        },
+        beforeEnter: (to, from, next) => {
+          let views = localStorage.getItem('view')
+          if (views == 'Risk Department') {
+            next()
+          } else {
+            next('login')
+          }
+        }
+      }]
   },
   {
     path: '/organisation',

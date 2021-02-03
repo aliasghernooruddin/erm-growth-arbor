@@ -77,7 +77,7 @@ router.post("/add-employee", ensureAuthenticated, (req, res) => {
                 mailService.sendEmail(data.email, "Account created successfully", {
                     template: mailService.templates.NEW_USER,
                     link: "http://localhost:3000/api/v1/auth/activate-account/" + data._id,
-                    password: req.body.password
+                    password
                 }, (err, info) => {
                     if (err) {
                         console.log(err)

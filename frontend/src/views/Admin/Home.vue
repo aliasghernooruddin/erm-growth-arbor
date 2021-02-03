@@ -72,16 +72,6 @@
                     :rules="reqRules"
                   ></v-text-field>
                 </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    solo
-                    hide-details
-                    type="password"
-                    label="Organisation Password*"
-                    v-model="data['password']"
-                    :rules="passwordRules"
-                  ></v-text-field>
-                </v-col>
               </v-row>
               <small>*indicates required field</small>
             </v-container>
@@ -135,10 +125,20 @@ export default {
         { text: "Email", value: "email" },
         { text: "Creation Date", value: "creation_date" },
       ],
+      variables: {
+        categories: constants.CATEGORIES,
+        pillars: constants.PILLARS,
+        sub_categories: constants.SUB_CATEGORIES,
+        descriptions: constants.DESCRIPTIONS,
+        likelihoods: constants.LIKELIHOODS,
+        impacts: constants.IMPACTS,
+        frequencies: constants.FREQUENCIES,
+        ratings: constants.RATINGS,
+        statuses: constants.STATUSES,
+      },
       dialog: false,
       loading: false,
       reqRules: constants.REQ_RULES,
-      passwordRules: constants.PASSWORD_RULES,
       snackbar: false,
       multiLine: true,
       text: "",
@@ -151,6 +151,8 @@ export default {
     create() {
       if (this.$refs.form.validate()) {
         let data = { ...this.data };
+        data["variables"] = this.variables;
+        data["form4"] = this.variables;
         this.loading = true;
         AdminAPIs.create(data).then((resp) => {
           if (resp["status"]) {

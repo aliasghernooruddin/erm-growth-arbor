@@ -36,51 +36,66 @@
                 <v-container>
                   <v-row justify="center" align="center">
                     <v-col cols="12" md="8">
-                      <v-card-text>
-                        <h2 class="center font-weight-black grey--text mb-5">
-                          Risk Details
-                        </h2>
-                        <v-text-field
-                          v-model="data['title']"
-                          label="Risk Title"
-                          outlined
-                        ></v-text-field>
-                        <v-select
-                          v-model="data['categories']"
-                          :items="options['categories']"
-                          label="Risk Category"
-                          outlined
-                        ></v-select>
-                        <v-select
-                          v-model="data['sub_categories']"
-                          :items="options['categories_2']"
-                          label="Risk Sub Category"
-                          outlined
-                        ></v-select>
-                        <v-select
-                          v-model="data['likelihoods']"
-                          :items="options['likelihoods']"
-                          label="Risk Likelihood"
-                          outlined
-                        ></v-select>
-                        <v-select
-                          v-model="data['impacts']"
-                          :items="options['impacts']"
-                          label="Risk Impacts"
-                          outlined
-                        ></v-select>
-                        <v-text-field
-                          value="Class III-Control Critical"
-                          label="Inherent Risk Exposure"
-                          readonly
-                          outlined
-                        >
-                        </v-text-field>
-                      </v-card-text>
+                      <v-form ref="form1" v-model="valid[0]">
+                        <v-card-text>
+                          <h2 class="center font-weight-black grey--text mb-5">
+                            Risk Details
+                          </h2>
+                          <v-text-field
+                            :rules="reqRules"
+                            v-model="data['title']"
+                            label="Risk Title"
+                            outlined
+                          ></v-text-field>
+                          <v-select
+                            :rules="reqRules"
+                            v-model="data['category']"
+                            :items="options['categories']"
+                            label="Risk Category"
+                            outlined
+                          ></v-select>
+                          <v-select
+                            :rules="reqRules"
+                            v-model="data['sub_category']"
+                            :items="options['sub_categories']"
+                            label="Risk Sub Category"
+                            outlined
+                          ></v-select>
+                          <v-select
+                            @change="step1()"
+                            :rules="reqRules"
+                            v-model="data['likelihood']"
+                            :items="options['likelihoods']"
+                            label="Risk Likelihood"
+                            outlined
+                          ></v-select>
+                          <v-select
+                            :rules="reqRules"
+                            @change="step1()"
+                            v-model="data['impact']"
+                            :items="options['impacts']"
+                            label="Risk Impacts"
+                            outlined
+                          ></v-select>
+                          <v-text-field
+                            v-model="data['inherent_risk_exposure']"
+                            label="Inherent Risk Exposure"
+                            readonly
+                            outlined
+                          >
+                          </v-text-field>
+                        </v-card-text>
+                      </v-form>
 
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn color="primary" @click="e1 = 2"> Next </v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="e1 = 2"
+                          :disabled="!valid[0]"
+                        >
+                          Next
+                        </v-btn>
                       </v-card-actions>
                     </v-col>
                   </v-row>
@@ -93,41 +108,66 @@
                 <v-container>
                   <v-row justify="center" align="center">
                     <v-col cols="12" md="8">
-                      <v-card-text>
-                        <h2 class="center font-weight-black grey--text mb-5">
-                          Inherent Risk Assessment
-                        </h2>
-                        <v-text-field
-                          label="Root Causes"
-                          v-model="data['causes']"
-                          outlined
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          label="Consequences"
-                          v-model="data['consequences']"
-                          outlined
-                        >
-                        </v-text-field>
-                        <v-text-field
-                          v-model="data['financial_impact']"
-                          outlined
-                          type="number"
-                          label="Estimated financial Impact"
-                          prepend-inner-icon="mdi-currency-usd"
-                        ></v-text-field>
-                        <v-text-field
-                          v-model="data['risk_owner']"
-                          label="Risk Owner"
-                          outlined
-                        >
-                        </v-text-field>
-                      </v-card-text>
-
+                      <v-form ref="form2" v-model="valid[1]">
+                        <v-card-text>
+                          <h2 class="center font-weight-black grey--text mb-5">
+                            Inherent Risk Assessment
+                          </h2>
+                          <v-text-field
+                            :rules="reqRules"
+                            label="Root Causes"
+                            v-model="data['causes']"
+                            outlined
+                          >
+                          </v-text-field>
+                          <v-text-field
+                            :rules="reqRules"
+                            label="Consequences"
+                            v-model="data['consequences']"
+                            outlined
+                          >
+                          </v-text-field>
+                          <v-text-field
+                            :rules="reqRules"
+                            v-model="data['financial_impact']"
+                            outlined
+                            type="number"
+                            label="Estimated financial Impact"
+                            prepend-inner-icon="mdi-currency-usd"
+                          ></v-text-field>
+                          <v-autocomplete
+                            :rules="reqRules"
+                            v-model="data['risk_owner']"
+                            :items="employees"
+                            item-text="name"
+                            outlined
+                            :filter="filterObject"
+                            label="Risk Owner"
+                            return-object
+                          >
+                            <template v-slot:item="data">
+                              <v-list-item-content>
+                                <v-list-item-title
+                                  v-html="data.item.name"
+                                ></v-list-item-title>
+                                <v-list-item-subtitle
+                                  v-html="data.item.department"
+                                ></v-list-item-subtitle>
+                              </v-list-item-content>
+                            </template>
+                          </v-autocomplete>
+                        </v-card-text>
+                      </v-form>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn text @click="e1 = 1"> Back </v-btn>
-                        <v-btn color="primary" @click="e1 = 3"> Next </v-btn>
+                        <v-btn
+                          color="primary"
+                          @click="e1 = 3"
+                          :disabled="!valid[1]"
+                        >
+                          Next
+                        </v-btn>
                       </v-card-actions>
                     </v-col>
                   </v-row>
@@ -140,72 +180,121 @@
                 <v-container>
                   <v-row justify="center" align="center">
                     <v-col cols="12">
-                      <v-card-text>
-                        <h2 class="center font-weight-black grey--text mb-5">
-                          Current Mitigation Controls, Aggregate FCC
-                        </h2>
-                        <v-row v-for="index in controls" :key="index">
-                          <v-col cols="3">
-                            <v-text-field
-                              v-model="data['controls']['key_controls']"
-                              outlined
-                              label="Key Controls"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="3">
-                            <v-autocomplete
-                              v-model="data['controls']['control_owners']"
-                              :items="people"
-                              outlined
-                              item-text="name"
-                              label="Control Owners"
-                            >
-                              <template v-slot:item="data">
-                                <template v-if="typeof data.item !== 'object'">
-                                  <v-list-item-content
-                                    v-text="data.item"
-                                  ></v-list-item-content>
-                                </template>
-                                <template v-else>
+                      <v-form ref="form3" v-model="valid[2]">
+                        <v-card-text>
+                          <h2 class="center font-weight-black grey--text mb-5">
+                            Current Mitigation Controls, Aggregate Financial
+                            Cost Control - FCC
+                          </h2>
+                          <v-row
+                            v-for="(key, index) of data['controls']"
+                            :key="index"
+                          >
+                            <v-col cols="3">
+                              <v-text-field
+                                :rules="reqRules"
+                                v-model="
+                                  data['controls'][index]['key_controls']
+                                "
+                                outlined
+                                label="Key Controls"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="3">
+                              <v-autocomplete
+                                :rules="reqRules"
+                                v-model="
+                                  data['controls'][index]['control_owners']
+                                "
+                                :items="employees"
+                                item-text="name"
+                                outlined
+                                :filter="filterObject"
+                                label="Control Owners"
+                              >
+                                <template v-slot:item="data">
                                   <v-list-item-content>
                                     <v-list-item-title
                                       v-html="data.item.name"
                                     ></v-list-item-title>
                                     <v-list-item-subtitle
-                                      v-html="data.item.group"
+                                      v-html="data.item.department"
                                     ></v-list-item-subtitle>
                                   </v-list-item-content>
                                 </template>
-                              </template>
-                            </v-autocomplete>
-                          </v-col>
-                          <v-col cols="3">
-                            <v-text-field
-                              v-model="data['controls']['fcc']"
-                              outlined
-                              label="FCC"
-                            ></v-text-field
-                          ></v-col>
-                          <v-col cols="3">
-                            <v-select
-                              v-model="data['controls']['frequencies']"
-                              :items="options['frequencies']"
-                              label="Control Review Frequency"
-                              outlined
-                            ></v-select>
-                          </v-col>
-                        </v-row>
-                        <v-text-field
-                          readonly
-                          outlined
-                          label="Residual Risk Exposure"
-                          value="Class III-Control Critical"
-                        ></v-text-field>
-                      </v-card-text>
+                              </v-autocomplete>
+                            </v-col>
+                            <v-col cols="2">
+                              <v-text-field
+                                :rules="reqRules"
+                                type="number"
+                                v-model="data['controls'][index]['fcc']"
+                                outlined
+                                label="FCC"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="3">
+                              <v-select
+                                :rules="reqRules"
+                                v-model="data['controls'][index]['frequencies']"
+                                :items="options['frequencies']"
+                                label="Control Review Frequency"
+                                outlined
+                              ></v-select>
+                            </v-col>
+                            <v-col class="mt-4">
+                              <v-btn
+                                @click="deleteControl(index)"
+                                icon
+                                v-if="index != 0"
+                                small
+                                color="error"
+                              >
+                                <v-icon>mdi-minus</v-icon>
+                              </v-btn>
+                              <v-btn
+                                @click="addControl"
+                                color="blue"
+                                v-if="
+                                  index ==
+                                  Object.keys(data['controls']).length - 1
+                                "
+                                icon
+                                small
+                              >
+                                <v-icon>mdi-plus</v-icon></v-btn
+                              >
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="6">
+                              <v-text-field
+                                readonly
+                                outlined
+                                label="Residual Risk Exposure"
+                                v-model="data['residual_risk_exposure']"
+                              ></v-text-field>
+                            </v-col>
+                            <v-col cols="2">
+                              <v-text-field
+                                readonly
+                                outlined
+                                label="Total FCC"
+                                :value="data['total_fcc_controls']"
+                              ></v-text-field>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-form>
                       <v-card-actions>
                         <v-spacer></v-spacer>
                         <v-btn text @click="e1 = 2"> Back </v-btn>
-                        <v-btn color="primary" class="mr-4" @click="e1 = 4">
+                        <v-btn
+                          color="primary"
+                          class="mr-4"
+                          @click="e1 = 4"
+                          :disabled="!valid[2]"
+                        >
                           Next
                         </v-btn>
                       </v-card-actions>
@@ -216,92 +305,146 @@
             </v-stepper-content>
 
             <v-stepper-content step="4">
-              <v-container>
-                <v-row justify="center" align="center">
-                  <v-col cols="12">
-                    <v-card-text>
-                      <h2 class="center font-weight-black grey--text mb-5">
-                        Treatment Plans
-                      </h2>
-                      <v-row v-for="index in controls" :key="index">
-                        <v-col cols="3">
-                          <v-text-field
-                            v-model="data['treatment']['plans']"
-                            outlined
-                            label="Risk Treatment Plan"
-                          ></v-text-field
-                        ></v-col>
-                        <v-col cols="3">
-                          <v-autocomplete
-                            v-model="data['treatment']['action_owners']"
-                            :items="people"
-                            outlined
-                            item-text="name"
-                            label="Action Owners"
+              <v-card>
+                <v-container>
+                  <v-row justify="center" align="center">
+                    <v-col cols="12">
+                      <v-form ref="form4" v-model="valid[3]">
+                        <v-card-text>
+                          <h2 class="center font-weight-black grey--text mb-5">
+                            Treatment Plans
+                          </h2>
+                          <v-row
+                            v-for="(key, index) of data['treatments']"
+                            :key="index"
                           >
-                            <template v-slot:item="data">
-                              <template v-if="typeof data.item !== 'object'">
-                                <v-list-item-content
-                                  v-text="data.item"
-                                ></v-list-item-content>
-                              </template>
-                              <template v-else>
-                                <v-list-item-content>
-                                  <v-list-item-title
-                                    v-html="data.item.name"
-                                  ></v-list-item-title>
-                                  <v-list-item-subtitle
-                                    v-html="data.item.group"
-                                  ></v-list-item-subtitle>
-                                </v-list-item-content>
-                              </template>
-                            </template>
-                          </v-autocomplete>
-                        </v-col>
-                        <v-col cols="3">
-                          <v-text-field
-                            v-model="data['treatment']['fcc']"
-                            outlined
-                            label="FCC"
-                          ></v-text-field
-                        ></v-col>
-                        <v-col cols="3">
-                          <v-menu
-                            ref="menu"
-                            v-model="menu"
-                            :close-on-content-click="false"
-                            :return-value.sync="date"
-                            transition="scale-transition"
-                            offset-y
-                            min-width="auto"
-                          >
-                            <template v-slot:activator="{ on, attrs }">
+                            <v-col cols="3">
                               <v-text-field
-                                v-model="data['treatment']['review_date']"
+                                :rules="reqRules"
+                                v-model="data['treatments'][index]['plans']"
                                 outlined
-                                label="Next Review Date"
+                                label="Risk Treatment Plan"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="3">
+                              <v-autocomplete
+                                :rules="reqRules"
+                                v-model="
+                                  data['treatments'][index]['action_owners']
+                                "
+                                :items="employees"
+                                item-text="name"
+                                outlined
+                                :filter="filterObject"
+                                label="Action Owners"
+                              >
+                                <template v-slot:item="data">
+                                  <v-list-item-content>
+                                    <v-list-item-title
+                                      v-html="data.item.name"
+                                    ></v-list-item-title>
+                                    <v-list-item-subtitle
+                                      v-html="data.item.department"
+                                    ></v-list-item-subtitle>
+                                  </v-list-item-content>
+                                </template>
+                              </v-autocomplete>
+                            </v-col>
+                            <v-col cols="2">
+                              <v-text-field
+                                :rules="reqRules"
+                                type="number"
+                                v-model="data['treatments'][index]['fcc']"
+                                outlined
+                                label="FCC"
+                              ></v-text-field
+                            ></v-col>
+                            <v-col cols="3">
+                              <v-menu
+                                ref="menu"
+                                v-model="menu"
+                                :close-on-content-click="false"
+                                :return-value.sync="date"
+                                transition="scale-transition"
+                                offset-y
+                                min-width="auto"
+                              >
+                                <template v-slot:activator="{ on, attrs }">
+                                  <v-text-field
+                                    :rules="reqRules"
+                                    v-model="
+                                      data['treatments'][index]['review_date']
+                                    "
+                                    outlined
+                                    label="Next Review Date"
+                                    readonly
+                                    v-bind="attrs"
+                                    v-on="on"
+                                  ></v-text-field>
+                                </template>
+                                <v-date-picker
+                                  v-model="
+                                    data['treatments'][index]['review_date']
+                                  "
+                                  no-title
+                                  scrollable
+                                >
+                                </v-date-picker>
+                              </v-menu>
+                            </v-col>
+                            <v-col class="mt-4">
+                              <v-btn
+                                @click="deleteTreatment(index)"
+                                icon
+                                v-if="index != 0"
+                                small
+                                color="error"
+                              >
+                                <v-icon>mdi-minus</v-icon>
+                              </v-btn>
+                              <v-btn
+                                @click="addTreatment"
+                                color="blue"
+                                v-if="
+                                  index ==
+                                  Object.keys(data['treatments']).length - 1
+                                "
+                                icon
+                                small
+                              >
+                                <v-icon>mdi-plus</v-icon></v-btn
+                              >
+                            </v-col>
+                          </v-row>
+                          <v-row>
+                            <v-col cols="6"> </v-col>
+                            <v-col cols="2">
+                              <v-text-field
                                 readonly
-                                v-bind="attrs"
-                                v-on="on"
+                                outlined
+                                label="Total FCC"
+                                :value="data['total_fcc_treatments']"
                               ></v-text-field>
-                            </template>
-                            <v-date-picker v-model="date" no-title scrollable>
-                            </v-date-picker>
-                          </v-menu>
-                        </v-col>
-                      </v-row>
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn text @click="e1 = 3"> Back </v-btn>
-                      <v-btn color="primary" class="mr-4" @click="e1 = 5">
-                        Next
-                      </v-btn>
-                    </v-card-actions>
-                  </v-col>
-                </v-row>
-              </v-container>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-form>
+                      <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn text @click="e1 = 3"> Back </v-btn>
+                        <v-btn
+                          color="primary"
+                          class="mr-4"
+                          @click="e1 = 5"
+                          :disabled="!valid[3]"
+                        >
+                          Next
+                        </v-btn>
+                      </v-card-actions>
+                    </v-col>
+                  </v-row>
+                </v-container>
+              </v-card>
             </v-stepper-content>
 
             <v-stepper-content step="5">
@@ -334,8 +477,14 @@
                 <v-card-actions>
                   <v-spacer></v-spacer>
                   <v-btn text @click="e1 = 4"> Back </v-btn>
-                  <v-btn color="primary" class="mr-4" @click="e1 = 1">
-                    Save
+                  <v-btn
+                    color="primary"
+                    class="mr-4"
+                    :disabled="loading"
+                    :loading="loading"
+                    @click="createRisk()"
+                  >
+                    Submit for Review
                   </v-btn>
                 </v-card-actions>
               </v-card>
@@ -357,6 +506,8 @@
 
 <script>
 import CreatorAPIS from "@/service/apis/creator.js";
+import constants from "@/service/constants.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Creator",
@@ -364,51 +515,148 @@ export default {
   data() {
     return {
       e1: 1,
+      valid: [false, false, false, false],
       data: {
-        treatment: [],
-        controls: [],
+        treatments: [
+          { plans: "", action_owners: "", fcc: "", review_date: "" },
+        ],
+        controls: [
+          { key_controls: "", control_owners: "", fcc: "", frequencies: "" },
+        ],
+        residual_risk_exposure: "Class III-Control Critical",
       },
+      loading: false,
       date: "",
       menu: false,
       tags: [],
-      people: [
-        { header: "Human Resource" },
-        { name: "Aliasgher Nooruddin", group: "Human Resource" },
-        { name: "Hussain Abbas", group: "Human Resource" },
-        { divider: true },
-        { header: "Accounts" },
-        { name: "Yasir Ahmed", group: "Accounts" },
-        { name: "Tahir Yusuf", group: "Accounts" },
-      ],
-      organisationId: null,
-      controls: 3,
-      treatments: 3,
+      employees: [],
       options: {},
+      risk_exposure: constants.RISK_EXPOSURE,
+      reqRules: constants.REQ_RULES,
       snackbar: false,
       multiLine: true,
       text: "",
     };
   },
+  watch: {
+    data: {
+      handler() {
+        this.calculateFccControl();
+        this.calculateFccTreatment();
+      },
+      deep: true,
+    },
+  },
+  computed: {
+    ...mapGetters(["USERINFO"]),
+  },
   created: function () {
-    this.organisationId = JSON.parse(localStorage.getItem("organisation"))[
-      "organisationId"
-    ];
     this.getOrganisationVariables();
+    this.getOrganisationEmployees();
   },
   methods: {
     getOrganisationVariables() {
-      CreatorAPIS.getOrganisationVariables(this.organisationId).then((res) => {
+      let id = this.USERINFO["organisationId"];
+      CreatorAPIS.getOrganisationVariables(id).then((res) => {
         if (res["status"]) {
           this.options = res["data"]["form4"];
         }
       });
     },
-    moveEnd() {
-      console.log("k");
-      window.scrollTo(
-        0,
-        document.body.scrollHeight || document.documentElement.scrollHeight
+    step1() {
+      if (this.data["likelihood"] && this.data["impact"]) {
+        let first = this.risk_exposure.filter((e) =>
+          e.includes(this.data["impact"])
+        );
+        let second = first.filter((e) => e.includes(this.data["likelihood"]));
+        this.data["inherent_risk_exposure"] = second[0][2];
+      }
+    },
+    getOrganisationEmployees() {
+      let id = this.USERINFO["organisationId"];
+      CreatorAPIS.getEmployeesDropdown(id).then((res) => {
+        if (res["status"]) {
+          this.employees = res["data"];
+        }
+      });
+    },
+    filterObject(item, queryText) {
+      return (
+        item.name.toLocaleLowerCase().indexOf(queryText.toLocaleLowerCase()) >
+          -1 ||
+        item.department
+          .toLocaleLowerCase()
+          .indexOf(queryText.toLocaleLowerCase()) > -1
       );
+    },
+    addControl() {
+      this.data["controls"].push({
+        key_controls: "",
+        control_owners: "",
+        fcc: "",
+        frequencies: "",
+      });
+    },
+    deleteControl(i) {
+      this.data["controls"].splice(i, 1);
+    },
+    calculateFccControl() {
+      let temp = 0;
+      this.data["controls"].forEach((e) => {
+        if (e.fcc) {
+          temp = parseInt(e.fcc) + temp;
+        }
+      });
+      this.data["total_fcc_controls"] = temp;
+    },
+    addTreatment() {
+      this.data["treatments"].push({
+        plans: "",
+        action_owners: "",
+        fcc: "",
+        review_date: "",
+      });
+    },
+    deleteTreatment(i) {
+      this.data["treatments"].splice(i, 1);
+    },
+    calculateFccTreatment() {
+      let temp = 0;
+      this.data["treatments"].forEach((e) => {
+        if (e.fcc) {
+          temp = parseInt(e.fcc) + temp;
+        }
+      });
+      this.data["total_fcc_treatments"] = temp;
+    },
+    createRisk() {
+      this.data["organisationId"] = this.USERINFO["organisationId"];
+      CreatorAPIS.createRisk(this.data).then((res) => {
+        this.loading = true;
+        if (res["status"]) {
+          this.data = {
+            treatments: [
+              { plans: "", action_owners: "", fcc: "", review_date: "" },
+            ],
+            controls: [
+              {
+                key_controls: "",
+                control_owners: "",
+                fcc: "",
+                frequencies: "",
+              },
+            ],
+          };
+          this.$refs.form1.reset();
+          this.$refs.form2.reset();
+          this.$refs.form3.reset();
+          this.$refs.form4.reset();
+          this.e1 = 1;
+        }
+        this.loading = false;
+        this.text = res["message"];
+        this.snackbar = true;
+      });
     },
   },
 };
@@ -424,42 +672,4 @@ export default {
 .v-card__title {
   padding: 0;
 }
-
-.custom-loader {
-  animation: loader 1s infinite;
-}
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 </style>
-
-

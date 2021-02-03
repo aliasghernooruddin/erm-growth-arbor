@@ -25,7 +25,7 @@
                         <v-card-text>
                           <v-form ref="form" v-model="valid[0]">
                             <v-text-field
-                              v-model="organisationInfo['name']"
+                              v-model="ORGANISATIONINFO['name']"
                               readonly
                               label="Company Name"
                             ></v-text-field>
@@ -253,35 +253,21 @@
 import constants from "@/service/constants.js";
 import OrganisationApi from "@/service/apis/organisation.js";
 import AuthenticationAPIS from "@/service/apis/authentication.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Details",
   components: {},
   data() {
     return {
-      organisationInfo: {},
-      userInfo: {},
       password: null,
       form: [{}, {}, {}],
-      selected_variables: {},
       valid: [false, false, false],
       employees: ["1-50", "51-500", "500-1000", "1000+"],
       currency: ["USD", "PKR", "AUD", "GBP"],
       e4: 1,
       icon: "",
 
-      // These are Variables constants
-      variables: {
-        categories: constants.CATEGORIES,
-        pillars: constants.PILLARS,
-        categories_2: constants.CATEGORIES_2,
-        descriptions: constants.DESCRIPTIONS,
-        likelihoods: constants.LIKELIHOODS,
-        impacts: constants.IMPACTS,
-        frequencies: constants.FREQUENCIES,
-        ratings: constants.RATINGS,
-        statuses: constants.STATUSES,
-      },
       // These are views constants
       reqRules: constants.REQ_RULES,
       countries: constants.COUNTRIES,
@@ -293,26 +279,22 @@ export default {
       multiLine: true,
     };
   },
+  computed: {
+    ...mapGetters(["USERINFO", "ORGANISATIONINFO"]),
+  },
   created: function () {
     this.getOrganisation();
     this.getUserInfo();
   },
   methods: {
     getUserInfo() {
-      this.userInfo = JSON.parse(localStorage.getItem("organisation"));
-      if (this.userInfo["isFirstVisit"]) {
-        this.dialog = true;
-      }
+      if (this.USERINFO["isFirstVisit"]) this.dialog = true;
     },
     getOrganisation() {
-      OrganisationApi.getOrganisation().then((resp) => {
-        if (resp["status"]) {
-          this.organisationInfo = resp["data"];
-          if (resp["data"]["form1"]) this.form[0] = resp["data"]["form1"];
-          if (resp["data"]["form2"]) this.form[1] = resp["data"]["form2"];
-          if (resp["data"]["form3"]) this.form[2] = resp["data"]["form3"];
-        }
-      });
+      let data = this.ORGANISATIONINFO;
+      if (data["form1"]) this.form[0] = data["form1"];
+      if (data["form2"]) this.form[1] = data["form2"];
+      if (data["form3"]) this.form[2] = data["form3"];
     },
     getIcon() {
       let currency = this.form[0]["currency"];
@@ -329,7 +311,7 @@ export default {
     submitForm(i) {
       this.loading = true;
       let data = this.form[i];
-      data["id"] = this.organisationInfo["_id"];
+      data["id"] = this.ORGANISATIONINFO["_id"];
       data["form"] = "form" + (i + 1);
       OrganisationApi.updateOrganisation(data).then((resp) => {
         if (resp["status"]) {
@@ -345,8 +327,6 @@ export default {
       AuthenticationAPIS.changePassword({ data: this.password }).then((res) => {
         if (res["status"]) {
           this.dialog = false;
-          this.userInfo["isFirstVisit"] = false;
-          localStorage.setItem("organisation", JSON.stringify(this.userInfo));
         }
         this.text = res["message"];
         this.snackbar = true;

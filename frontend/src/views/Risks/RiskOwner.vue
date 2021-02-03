@@ -19,6 +19,9 @@
 </template>
 
 <script>
+// import CreatorAPIS from "@/service/apis/creator.js";
+// import { mapGetters } from "vuex";
+
 export default {
   name: "Owner",
   components: {},
@@ -38,8 +41,6 @@ export default {
 };
 </script>
 
-<style>
-.no-bg {
-  background: none !important;
-}
+<style scoped>
+
 </style>

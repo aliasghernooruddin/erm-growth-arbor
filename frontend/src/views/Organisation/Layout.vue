@@ -100,7 +100,7 @@ export default {
 };
 </script>
 
-<style >
+<style scoped>
 .rows {
   min-height: calc(100vh - 64px);
 }

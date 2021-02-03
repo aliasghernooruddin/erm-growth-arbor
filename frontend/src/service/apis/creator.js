@@ -11,8 +11,30 @@ const createRiskUrl = `${BASE_DOMAIN}/create-risk`;
 
 const getOrganisationVariablesUrl = `${BASE_DOMAIN}/organisation-variables/`;
 
+const getEmployeesDropdownUrl = `${BASE_DOMAIN}/organisation-employees/`;
+
+const getRisksUrl = `${BASE_DOMAIN}/get-risks/`;
+
 export default ({
-    create(data) {
+    getOrganisationVariables(id) {
+        return axios.get(getOrganisationVariablesUrl + id, { withCredentials: true }).then(res => {
+            return res.data
+        }).catch(err => {
+            console.log(err.response.data)
+            return err.response.data
+        })
+    },
+
+    getEmployeesDropdown(id) {
+        return axios.get(getEmployeesDropdownUrl + id, { withCredentials: true }).then(res => {
+            return res.data
+        }).catch(err => {
+            console.log(err.response.data)
+            return err.response.data
+        })
+    },
+
+    createRisk(data) {
         return axios.post(createRiskUrl, data, { withCredentials: true }).then(res => {
             return res.data
         }).catch(err => {
@@ -21,8 +43,9 @@ export default ({
         })
     },
 
-    getOrganisationVariables(id) {
-        return axios.get(getOrganisationVariablesUrl + id, { withCredentials: true }).then(res => {
+
+    getRisks(id){
+        return axios.get(getRisksUrl + id, { withCredentials: true }).then(res => {
             return res.data
         }).catch(err => {
             console.log(err.response.data)

@@ -42,6 +42,16 @@ const organisationSchema = new mongoose.Schema({
     ratings: Array,
     statuses: Array
   },
+  variables: {
+    categories: Array,
+    sub_categories: Array,
+    descriptions: Array,
+    likelihoods: Array,
+    impacts: Array,
+    frequencies: Array,
+    ratings: Array,
+    statuses: Array
+  },
   departments: Array
 });
 

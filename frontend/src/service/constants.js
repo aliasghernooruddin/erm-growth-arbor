@@ -264,12 +264,6 @@ export default {
     "Operations & Infraorganisation",
     "Strategy & Planning",
   ],
-  PILLARS: [
-    "Exploration & Growth",
-    "Operational & Capital Excellence",
-    "Marketing & Sales",
-    "HR",
-  ],
   SUB_CATEGORIES: [
     "Expansions & Investments",
     "Schedule/Costs (Projects)",
@@ -296,7 +290,7 @@ export default {
     "Risk 2",
     "Exploration & mining licenses not granted for new territories or revoked for existing territories",
     "Failure of exploration to: a) Add/secure new resources, b) Extend life of existing mines (LOM)",
-    "Lack of high cost smelter curtailments (Specially in China)",
+    "Lack of High cost smelter curtailments (Specially in China)",
     "Execution & completion of capital projects within time and cost",
     "Inability to achieve production & growth targets ",
     "Loosing social license to operate",
@@ -338,7 +332,7 @@ export default {
     "Inability to attract, develop & retain human resources (Skills shortage)",
   ],
   LIKELIHOODS: [
-    "1 - Rare",
+    "1- Rare",
     "2- Unlikely",
     "3- Possible",
     "4- Likely",
@@ -360,4 +354,85 @@ export default {
     "Inadequate-Unsatisfactory - 10 - No systems and processes exist to manage the risk",
   ],
   STATUSES: ["On Track", "Off Track"],
+  CARDS: [
+    {
+      name: "Risk Categories",
+      text:
+        "Risk Categories are the categories for the risk which is suitable for the company",
+      variable: "categories",
+    },
+    {
+      name: "Risk Sub Categories",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "sub_categories",
+    },
+    {
+      name: "Risk Descriptions",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "descriptions",
+    },
+    {
+      name: "Risk Likelihoods",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "likelihoods",
+    },
+    {
+      name: "Risk Impacts",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "impacts",
+    },
+    {
+      name: "Risk Frequencies",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "frequencies",
+    },
+    {
+      name: "Risk Ratings",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "ratings",
+    },
+    {
+      name: "Risk Statuses",
+      text:
+        "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
+      variable: "statuses",
+    },
+  ],
+  RISK_EXPOSURE: [
+    ["1- Rare",  "1- Very Low", "Low Class 1"],
+    ["1- Rare", "2- Low", "Low Class 1"],
+    ["1- Rare", "3- Moderate", "Moderate Class 2"],
+    ["1- Rare", "4- High", "Moderate Class 2 "],
+    ["1- Rare", "5- Very High", "High Class 3"],
+
+    ["2- Unlikely",  "1- Very Low", "Low Class 1"],
+    ["2- Unlikely", "2- Low", "Moderate Class 2"],
+    ["2- Unlikely", "3- Moderate", "Moderate Class 2"],
+    ["2- Unlikely", "4- High", "High Class 3"],
+    ["2- Unlikely", "5- Very High", "High Class 3"],
+
+    ["3- Possible",  "1- Very Low", "Moderate Class 2"],
+    ["3- Possible", "2- Low", "Moderate Class 2"],
+    ["3- Possible", "3- Moderate", "High Class 3"],
+    ["3- Possible", "4- High", "High Class 3"],
+    ["3- Possible", "5- Very High", "Extreme Class 4"],
+
+    ["4- Likely",  "1- Very Low", "Moderate Class 2"],
+    ["4- Likely", "2- Low", "High Class 3"],
+    ["4- Likely", "3- Moderate", "High Class 3"],
+    ["4- Likely", "4- High", "Extreme Class 4"],
+    ["4- Likely", "5- Very High", "Extreme Class 4"],
+
+    ["5- Almost Certain",  "1- Very Low", "High Class 3"],
+    ["5- Almost Certain", "2- Low", "High Class 3"],
+    ["5- Almost Certain", "3- Moderate", "Extreme Class 4"],
+    ["5- Almost Certain", "4- High", "Extreme Class 4"],
+    ["5- Almost Certain", "5- Very High", "Extreme Class 4"]
+  ]
 }

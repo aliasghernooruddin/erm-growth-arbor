@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   organisationId: { type: String, required: true },
   phone: { type: String, required: true },
-  position: { type: String },
+  designation: String,
   isUser: { type: Boolean, default: false },
   isHead: { type: Boolean, default: false },
   isVerified: { type: Boolean, default: false },

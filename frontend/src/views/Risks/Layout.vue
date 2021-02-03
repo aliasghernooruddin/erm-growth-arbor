@@ -1,90 +1,50 @@
 <template>
   <section>
-    <v-app-bar clipped-left app dark color="cyan lighten-1">
-      <!-- <v-app-bar-nav-icon @click="drawer = !drawer" /> -->
+    <v-app-bar app dark color="cyan lighten-1">
+      <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <v-toolbar-title>
-        <v-img src="../../assets/logo.png" class="logo mr-10"></v-img>
-      </v-toolbar-title>
       <h3>ENTERPRISE RISK MANAGEMENT - RISK CREATOR</h3>
       <v-spacer></v-spacer>
       <v-btn color="white" text @click="logout">Logout</v-btn>
     </v-app-bar>
-    <!-- <v-navigation-drawer clipped v-model="drawer" app color="grey lighten-5">
-      <v-list>
+    <v-navigation-drawer v-model="drawer" app>
+      <div class="pa-2">
+        <div class="title font-weight-bold text-uppercase primary--text">
+          Growth Arbor
+        </div>
+        <div class="overline grey--text">2021</div>
+      </div>
+      <v-list rounded>
+        <v-list-item router to="risks" color="primary">
+          <v-list-item-action>
+            <v-icon color="primary">mdi-fireplace-off</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>View Risks</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+
         <v-list-item router to="creator" color="primary">
           <v-list-item-action>
             <v-icon color="primary">mdi-pencil</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Risk Creator</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-           <v-list-item router to="creator2" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-fireplace-off</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Risk Creator 2</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item router to="owner" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-slope-downhill</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Risk Owner</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item router to="department" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-bus-clock</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Risk Department</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item router to="committee" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-source-commit</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Risk Committee</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item router to="ceo" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-fireplace-off</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>CEO</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-
-        <v-list-item router to="organisation" color="primary">
-          <v-list-item-action>
-            <v-icon color="primary">mdi-cog</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title>Create Risk</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer> -->
+    </v-navigation-drawer>
 
     <v-sheet class="rows" color="grey lighten-3">
-      <router-view name="portal" />
+      <router-view name="portal" v-if="Object.keys(USERINFO).length" />
     </v-sheet>
   </section>
 </template>
 
 <script>
 import AuthenticationAPIS from "@/service/apis/authentication.js";
+import OrganisationApi from "@/service/apis/organisation.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Layout",
@@ -93,16 +53,32 @@ export default {
       drawer: true,
     };
   },
+  computed: {
+    ...mapGetters(["USERINFO"]),
+  },
   methods: {
     logout() {
       AuthenticationAPIS.logout();
     },
+    getUserInfo() {
+      OrganisationApi.getEmployee().then((res) => {
+        if (res["status"]) {
+          this.$store.dispatch("SAVE_USERINFO", res["data"]);
+        }
+      });
+    },
   },
-  created: function () {},
+  created: function () {
+    this.getUserInfo();
+  },
 };
 </script>
 
-<style>
+<style scoped>
+.no-bg {
+  background: none !important;
+}
+
 .rows {
   /* height: calc(100vh - 64px); */
   min-height: calc(100vh - 64px);
@@ -110,41 +86,5 @@ export default {
 
 .logo {
   width: 60px !important;
-}
-
-.custom-loader {
-  animation: loader 1s infinite;
-}
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }
 </style>

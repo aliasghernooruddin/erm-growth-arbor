@@ -75,10 +75,10 @@
                       </v-col>
                       <v-col>{{ selected.company }}</v-col>
                       <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
-                        Position:
+                        Designation:
                       </v-col>
                       <v-col>
-                        {{ selected.position }}
+                        {{ selected.designation }}
                       </v-col>
                       <v-col class="text-right mr-4 mb-2" tag="strong" cols="5">
                         Phone:
@@ -135,8 +135,8 @@
                   <v-text-field
                     solo
                     hide-details
-                    label=" Position"
-                    v-model="employee['position']"
+                    label=" Designation"
+                    v-model="employee['designation']"
                     :rules="reqRules"
                   ></v-text-field>
                 </v-col>

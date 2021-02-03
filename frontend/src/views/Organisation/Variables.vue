@@ -36,6 +36,17 @@
 
     <v-dialog v-model="show" width="600">
       <v-card>
+        <v-alert
+          v-if="
+            dialog['name'] == 'Risk Impacts' ||
+            dialog['name'] == 'Risk Likelihoods'
+          "
+          dense
+          text
+          type="error"
+        >
+          It is recommended not to change <strong>default selects</strong>
+        </v-alert>
         <v-card-title>{{ dialog["name"] }}</v-card-title>
         <v-card-subtitle>
           <v-btn depressed small class="mt-5 mr-5" @click="all"
@@ -78,103 +89,41 @@
 
 
 <script>
-import constants from "@/service/constants.js";
 import OrganisationApi from "@/service/apis/organisation.js";
+import constants from "@/service/constants.js";
+import { mapGetters } from "vuex";
 
 export default {
   name: "Details",
   components: {},
   data() {
     return {
-      organisationInfo: {},
+      variables: {},
       data: {},
-      loading: false,
-      cards: [
-        {
-          name: "Risk Categories",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "categories",
-        },
-        {
-          name: "Risk Sub Categories",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "sub_categories",
-        },
-        {
-          name: "Risk Descriptions",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "descriptions",
-        },
-        {
-          name: "Risk Likelihoods",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "likelihoods",
-        },
-        {
-          name: "Risk Impacts",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "impacts",
-        },
-        {
-          name: "Risk Frequencies",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "frequencies",
-        },
-        {
-          name: "Risk Ratings",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "ratings",
-        },
-        {
-          name: "Risk Statuses",
-          text:
-            "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Harum, corrupti similique. Quaerat laboriosam",
-          variable: "statuses",
-        },
-      ],
-      // These are Variables constants
-      variables: {
-        categories: constants.CATEGORIES,
-        pillars: constants.PILLARS,
-        sub_categories: constants.SUB_CATEGORIES,
-        descriptions: constants.DESCRIPTIONS,
-        likelihoods: constants.LIKELIHOODS,
-        impacts: constants.IMPACTS,
-        frequencies: constants.FREQUENCIES,
-        ratings: constants.RATINGS,
-        statuses: constants.STATUSES,
-      },
+      cards: constants.CARDS,
       dialog: {
         name: null,
         values: [],
         selectedValues: [],
         variable: null,
       },
+      loading: false,
       show: false,
-      reqRules: constants.REQ_RULES,
       text: "",
       snackbar: false,
       multiLine: true,
     };
+  },
+  computed: {
+    ...mapGetters(["ORGANISATIONINFO"]),
   },
   created: function () {
     this.getOrganisation();
   },
   methods: {
     getOrganisation() {
-      OrganisationApi.getOrganisation().then((resp) => {
-        if (resp["status"]) {
-          this.organisationInfo = resp["data"];
-          if (resp["data"]["form4"]) this.data = resp["data"]["form4"];
-        }
-      });
+      this.data = this.ORGANISATIONINFO["form4"];
+      this.variables = this.ORGANISATIONINFO["variables"];
     },
     openDialog(name, variable) {
       this.dialog["name"] = name;
@@ -185,7 +134,7 @@ export default {
     },
     submit() {
       this.loading = true;
-      this.data["id"] = this.organisationInfo["_id"];
+      this.data["id"] = this.ORGANISATIONINFO["_id"];
       this.data["form"] = "form4";
       this.data[this.dialog["variable"]] = this.dialog["selectedValues"];
       OrganisationApi.updateOrganisation(this.data).then((resp) => {

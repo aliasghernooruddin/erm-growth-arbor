@@ -26,6 +26,7 @@ const addDeparmentUrl = `${BASE_DOMAIN}/organisation/add-department`;
 
 const getDepartmentsDropdownUrl = `${BASE_DOMAIN}/organisation/get-departments-dropdown`;
 
+
 axios.interceptors.response.use(function (config) {
     return config
 }, function (err) {
@@ -105,6 +106,6 @@ export default ({
             console.log(err.response.data)
             return err.response.data
         })
-    }
+    },
 
 })

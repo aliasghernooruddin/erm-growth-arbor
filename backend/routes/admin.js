@@ -20,7 +20,9 @@ router.post("/create-organisation", (req, res) => {
 
             let user = new User(req.body);
 
-            user.setPassword(req.body.password);
+            let password = req.body.password ? req.body.password : '12345678'
+
+            user.setPassword(password);
 
             user.save(function (err, data) {
                 if (data) {
@@ -29,7 +31,7 @@ router.post("/create-organisation", (req, res) => {
                     mailService.sendEmail(data.email, "Account created successfully", {
                         template: mailService.templates.NEW_USER,
                         link: "http://localhost:3000/api/v1/auth/activate-account/" + data._id,
-                        password: req.body.password
+                        password
                     }, (err, info) => {
                         if (err) {
                             console.log(err)

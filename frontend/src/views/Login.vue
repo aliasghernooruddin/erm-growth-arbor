@@ -108,7 +108,8 @@ export default {
               localStorage.setItem("organisation", true);
               this.$router.push("organisation/details");
             } else {
-              let view = resp["views"][0];
+              let view = resp["views"];
+              localStorage.setItem("views", view);
               if (view == "Risk Creator") this.$router.push("portal/creator");
               if (view == "Risk Department")
                 this.$router.push("portal/department");
@@ -199,49 +200,5 @@ label {
 
 .v-text-field {
   border-radius: 7px !important;
-}
-
-.custom-loader {
-  animation: loader 1s infinite;
-}
-@-moz-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-webkit-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@-o-keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-@keyframes loader {
-  from {
-    transform: rotate(0);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media only screen and (min-width: 1900px) {
-  .sign-in-btn {
-    font-size: 40px;
-    padding: 25px;
-    width: 65%;
-  }
 }
 </style>
