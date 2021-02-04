@@ -646,6 +646,7 @@ export default {
                 frequencies: "",
               },
             ],
+            residual_risk_exposure: "Class III-Control Critical",
           };
           this.$refs.form1.reset();
           this.$refs.form2.reset();

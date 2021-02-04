@@ -3,7 +3,7 @@
     <v-app-bar app dark color="cyan lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <h3>ENTERPRISE RISK MANAGEMENT - RISK CREATOR</h3>
+      <h3>ENTERPRISE RISK MANAGEMENT - RISK {{ currentRouteName.toUpperCase() }}</h3>
       <v-spacer></v-spacer>
       <v-btn color="white" text @click="logout">Logout</v-btn>
     </v-app-bar>
@@ -24,7 +24,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item router to="creator" color="primary">
+        <v-list-item router :to="currentRouteName" color="primary">
           <v-list-item-action>
             <v-icon color="primary">mdi-pencil</v-icon>
           </v-list-item-action>
@@ -55,6 +55,9 @@ export default {
   },
   computed: {
     ...mapGetters(["USERINFO"]),
+    currentRouteName() {
+      return this.$route.name.toLowerCase()
+    },
   },
   methods: {
     logout() {

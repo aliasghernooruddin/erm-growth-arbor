@@ -151,6 +151,7 @@ import CreatorAPIS from "@/service/apis/creator.js";
 import { mapGetters } from "vuex";
 
 export default {
+  name: "Risks",
   data() {
     return {
       search: "",

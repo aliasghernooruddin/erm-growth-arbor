@@ -64,7 +64,7 @@ const routes = [
           portal: Owner
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views == 'Risk Owner') {
             next()
           } else {
@@ -79,7 +79,7 @@ const routes = [
           portal: CEO
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views == 'CEO') {
             next()
           } else {
@@ -94,7 +94,7 @@ const routes = [
           portal: Committee
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views == 'Risk Committee') {
             next()
           } else {
@@ -109,7 +109,7 @@ const routes = [
           portal: Creator
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views == 'Risk Creator') {
             next()
           } else {
@@ -124,7 +124,7 @@ const routes = [
           portal: Risks
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views) {
             next()
           } else {
@@ -139,7 +139,7 @@ const routes = [
           portal: Department
         },
         beforeEnter: (to, from, next) => {
-          let views = localStorage.getItem('view')
+          let views = localStorage.getItem('views')
           if (views == 'Risk Department') {
             next()
           } else {
