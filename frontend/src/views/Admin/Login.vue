@@ -17,6 +17,7 @@
                   <v-col cols="12">
                     <label for="email">Email</label>
                     <v-text-field
+                      @keyup.enter="login"
                       outlined
                       v-model="email"
                       :rules="emailRules"
@@ -25,6 +26,7 @@
                   <v-col cols="12">
                     <label for="password">Password</label>
                     <v-text-field
+                      @keyup.enter="login"
                       outlined
                       v-model="password"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"

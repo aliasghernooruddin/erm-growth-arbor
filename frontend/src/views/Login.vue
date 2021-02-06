@@ -18,8 +18,8 @@
                     <label for="email">Email</label>
                     <v-text-field
                       id="email"
+                      @keyup.enter="login"
                       outlined
-                      hide-details
                       v-model="data['email']"
                       :rules="emailRules"
                     />
@@ -28,8 +28,8 @@
                     <label for="password">Password</label>
                     <v-text-field
                       outlined
+                      @keyup.enter="login"
                       id="password"
-                      hide-details
                       v-model="data['password']"
                       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                       :rules="reqRules"

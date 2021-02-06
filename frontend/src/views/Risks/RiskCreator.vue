@@ -631,8 +631,8 @@ export default {
     },
     createRisk() {
       this.data["organisationId"] = this.USERINFO["organisationId"];
+      this.loading = true;
       CreatorAPIS.createRisk(this.data).then((res) => {
-        this.loading = true;
         if (res["status"]) {
           this.data = {
             treatments: [

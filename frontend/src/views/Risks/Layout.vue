@@ -3,7 +3,9 @@
     <v-app-bar app dark color="cyan lighten-1">
       <v-app-bar-nav-icon @click="drawer = !drawer" />
 
-      <h3>ENTERPRISE RISK MANAGEMENT - RISK {{ currentRouteName.toUpperCase() }}</h3>
+      <h3>
+        ENTERPRISE RISK MANAGEMENT - RISK {{ currentRouteName.toUpperCase() }}
+      </h3>
       <v-spacer></v-spacer>
       <v-btn color="white" text @click="logout">Logout</v-btn>
     </v-app-bar>
@@ -38,6 +40,26 @@
     <v-sheet class="rows" color="grey lighten-3">
       <router-view name="portal" v-if="Object.keys(USERINFO).length" />
     </v-sheet>
+
+    <v-dialog v-model="dialog" width="400" persistent>
+      <v-card>
+        <v-card-title>Please change your password</v-card-title>
+        <v-card-text>
+          <v-text-field
+            @keyup.enter="change"
+            type="password"
+            v-model="password"
+            label="New Password"
+            class="mt-4"
+            outlined
+          ></v-text-field>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :disabled="!password || loading" @click="change">Change</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </section>
 </template>
 
@@ -51,12 +73,15 @@ export default {
   data() {
     return {
       drawer: true,
+      dialog: false,
+      password: null,
+      loading: false
     };
   },
   computed: {
     ...mapGetters(["USERINFO"]),
     currentRouteName() {
-      return this.$route.name.toLowerCase()
+      return this.$route.name.toLowerCase();
     },
   },
   methods: {
@@ -67,7 +92,19 @@ export default {
       OrganisationApi.getEmployee().then((res) => {
         if (res["status"]) {
           this.$store.dispatch("SAVE_USERINFO", res["data"]);
+          if (this.USERINFO["isFirstVisit"]) this.dialog = true;
         }
+      });
+    },
+    change() {
+      this.loading = true;
+      AuthenticationAPIS.changePassword({ data: this.password }).then((res) => {
+        if (res["status"]) {
+          this.dialog = false;
+        }
+        this.text = res["message"];
+        this.snackbar = true;
+        this.loading = false;
       });
     },
   },

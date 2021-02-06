@@ -147,7 +147,7 @@
         <v-card-actions v-if="show">
           <v-spacer></v-spacer>
           <v-btn depressed tile color="primary" @click="isApprove = true"
-            >Forward to risk Department</v-btn
+            >Submit to risk Department</v-btn
           >
           <v-btn depressed tile color="error" @click="isReject = true"
             >REJECT</v-btn
@@ -156,14 +156,13 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="isApprove" width="500">
+    <v-dialog v-model="isApprove" width="400">
       <v-card>
-        <v-card-title>
-          Are you sure you want to approve and forward to Risk Department?
-        </v-card-title>
+        <v-card-title> Submit to Risk Department </v-card-title>
         <v-card-actions>
-          <v-btn>yes</v-btn>
-          <v-btn @click="isApprove = false">No</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn depressed @click="isApprove = false"> No </v-btn>
+          <v-btn depressed @click="submit">yes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -175,8 +174,9 @@
           <v-text-field solo placeholder="Comments Please"></v-text-field>
         </v-card-text>
         <v-card-actions>
-          <v-btn>yes</v-btn>
-          <v-btn @click="isReject = false">No</v-btn>
+         <v-btn depressed @click="isReject = false"> No </v-btn>
+          <v-btn depressed @click="reject">yes</v-btn>
+        </v-card-actions>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -240,6 +240,8 @@ export default {
       this.dialog = true;
       console.log(item);
     },
+    submit() {},
+    reject() {},
   },
   created() {
     this.getRisks();
@@ -248,3 +250,4 @@ export default {
 </script>
 <style>
 </style>
+bundleRenderer.renderToStream
