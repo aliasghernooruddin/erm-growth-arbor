@@ -24,6 +24,8 @@ const riskSchema = new mongoose.Schema({
     total_fcc_controls: { type: Number, required: true },
     total_fcc_treatments: { type: Number, required: true },
     treatments: { type: Array, required: true },
+    comments: { type: String, required: false },
+    isApproved: { type: String, default: false }
 
 },
     { strict: true }

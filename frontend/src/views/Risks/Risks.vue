@@ -119,7 +119,10 @@
                   >FCC: {{ treatment.fcc }}</v-col
                 >
                 <v-col cols="12" md="3" :key="treatment.review_date"
-                  >Review Date: {{ treatment.review_date | moment("dddd, MMMM Do YYYY")}}</v-col
+                  >Review Date:
+                  {{
+                    treatment.review_date | moment("dddd, MMMM Do YYYY")
+                  }}</v-col
                 >
               </template>
               <v-col cols="12" md="6"
@@ -140,7 +143,10 @@
             </v-row>
           </v-container>
         </v-card-text>
-        <v-card-actions></v-card-actions>
+        <v-card-actions v-if="show">
+          <v-spacer></v-spacer>
+          <v-btn depressed tile color="primary">Edit</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </section>
@@ -174,6 +180,9 @@ export default {
         {
           text: "Risk Owner",
           value: "risk_owner",
+        }, {
+          text: "Status",
+          value: "isApproved",
         },
         { text: "", value: "actions", sortable: false },
       ],
@@ -182,6 +191,10 @@ export default {
   },
   computed: {
     ...mapGetters(["USERINFO"]),
+    show(){
+      if(this.risk['level'] == 'Risk Creator') return true
+      else return false
+    }
   },
   methods: {
     getRisks() {

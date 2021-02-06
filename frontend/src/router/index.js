@@ -3,7 +3,7 @@ import VueRouter from 'vue-router'
 
 import Department from '../views/Risks/RiskDepartment.vue'
 import Committee from '../views/Risks/RiskCommittee.vue'
-import CEO from '../views/Risks/RiskCEO.vue'
+import CEO from '../views/Risks/CEO.vue'
 import Owner from '../views/Risks/RiskOwner.vue'
 import Creator from '../views/Risks/RiskCreator.vue'
 import RisksLayout from '../views/Risks/Layout.vue'

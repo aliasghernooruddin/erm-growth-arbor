@@ -5,7 +5,7 @@ axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 
 // Base Domain of our Backend
 // const BASE_DOMAIN = process.env.VUE_APP_BASE_DOMAIN
-const BASE_DOMAIN = 'http://localhost:3000/api/v1/owner'
+const BASE_DOMAIN = 'http://localhost:3000/api/v1/committee'
 
 const getRisksUrl = `${BASE_DOMAIN}/get-risks/`;
 

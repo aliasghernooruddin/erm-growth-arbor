@@ -147,7 +147,7 @@
         <v-card-actions v-if="show">
           <v-spacer></v-spacer>
           <v-btn depressed tile color="primary" @click="isApprove = true"
-            >Submit to risk Department</v-btn
+            >Approve</v-btn
           >
           <v-btn depressed tile color="error" @click="isReject = true"
             >REJECT</v-btn
@@ -158,7 +158,7 @@
 
     <v-dialog v-model="isApprove" width="400">
       <v-card>
-        <v-card-title> Submit to Risk Department </v-card-title>
+        <v-card-title> Approved by CEO </v-card-title>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn depressed @click="isApprove = false"> No </v-btn>
@@ -180,6 +180,7 @@
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
+           <v-spacer></v-spacer>
           <v-btn depressed @click="isReject = false"> No </v-btn>
           <v-btn
             depressed
@@ -204,7 +205,7 @@
 </template>
 
 <script>
-import OwnerAPIs from "@/service/apis/owner.js";
+import CEOAPIs from "@/service/apis/ceo.js";
 import { mapGetters } from "vuex";
 
 export default {
@@ -231,7 +232,8 @@ export default {
         {
           text: "Risk Owner",
           value: "risk_owner",
-        }, {
+        },
+        {
           text: "Status",
           value: "isApproved",
         },
@@ -250,18 +252,14 @@ export default {
   computed: {
     ...mapGetters(["USERINFO"]),
     show() {
-      if (
-        this.USERINFO["_id"] == this.risk["risk_owner"]["_id"] &&
-        this.risk["level"] == "Risk Owner"
-      )
-        return true;
+      if (this.risk["level"] == "CEO") return true;
       else return false;
     },
   },
   methods: {
     getRisks() {
       let id = this.USERINFO["organisationId"];
-      OwnerAPIs.getRisks(id).then((res) => {
+      CEOAPIs.getRisks(id).then((res) => {
         if (res["status"]) {
           this.risks = res["data"];
         }
@@ -278,16 +276,15 @@ export default {
         type,
         comments: this.comments,
       };
-      OwnerAPIs.updateRisk(data).then((res) => {
+      CEOAPIs.updateRisk(data).then((res) => {
         if (res["status"]) {
           this.comments = "";
           this.isApprove = false;
           this.isReject = false;
           this.dialog = false;
-          this.getRisks()
+          this.getRisks();
         }
         this.loading = false;
-
         this.text = res["message"];
         this.snackbar = true;
       });

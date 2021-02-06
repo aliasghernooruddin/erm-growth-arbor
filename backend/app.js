@@ -63,7 +63,7 @@ app.use(
 app.use(
   cors({
     credentials: true,
-    origin: (process.env.NODE_ENV == 'development') ? "http://localhost:8080" : "https://google.com",
+    origin: (process.env.NODE_ENV == 'development') ? "http://localhost:8082" : "https://google.com",
   })
 );
 
@@ -78,6 +78,10 @@ app.use('/api/v1/auth', require("./routes/authentication.js"));
 app.use('/api/v1/admin', require("./routes/admin.js"));
 app.use('/api/v1/organisation', require("./routes/organisation.js"));
 app.use('/api/v1/creator', require("./routes/creator.js"));
+app.use('/api/v1/owner', require("./routes/owner.js"));
+app.use('/api/v1/department', require("./routes/department.js"));
+app.use('/api/v1/committee', require("./routes/committee.js"));
+app.use('/api/v1/ceo', require("./routes/ceo.js"));
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

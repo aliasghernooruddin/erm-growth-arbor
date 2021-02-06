@@ -1,7 +1,7 @@
 <template>
   <section>
     <v-app-bar app dark color="cyan lighten-1">
-      <v-app-bar-nav-icon @click="drawer = !drawer" />
+      <v-app-bar-nav-icon v-if="show" @click="drawer = !drawer" />
 
       <h3>
         ENTERPRISE RISK MANAGEMENT - RISK {{ currentRouteName.toUpperCase() }}
@@ -26,7 +26,7 @@
           </v-list-item-content>
         </v-list-item>
 
-        <v-list-item router :to="currentRouteName" color="primary">
+        <v-list-item router to="creator" color="primary">
           <v-list-item-action>
             <v-icon color="primary">mdi-pencil</v-icon>
           </v-list-item-action>
@@ -72,16 +72,20 @@ export default {
   name: "Layout",
   data() {
     return {
-      drawer: true,
+      drawer: false,
       dialog: false,
       password: null,
-      loading: false
+      loading: false,
     };
   },
   computed: {
     ...mapGetters(["USERINFO"]),
     currentRouteName() {
       return this.$route.name.toLowerCase();
+    },
+    show() {
+      if (this.$route.name.toLowerCase() == "creator") return true;
+      else return false;
     },
   },
   methods: {
