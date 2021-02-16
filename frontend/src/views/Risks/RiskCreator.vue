@@ -92,7 +92,6 @@
                         <v-btn
                           color="primary"
                           @click="e1 = 2"
-                          :disabled="!valid[0]"
                         >
                           Next
                         </v-btn>
@@ -164,7 +163,6 @@
                         <v-btn
                           color="primary"
                           @click="e1 = 3"
-                          :disabled="!valid[1]"
                         >
                           Next
                         </v-btn>
@@ -293,7 +291,6 @@
                           color="primary"
                           class="mr-4"
                           @click="e1 = 4"
-                          :disabled="!valid[2]"
                         >
                           Next
                         </v-btn>
@@ -436,7 +433,6 @@
                           color="primary"
                           class="mr-4"
                           @click="e1 = 5"
-                          :disabled="!valid[3]"
                         >
                           Next
                         </v-btn>
